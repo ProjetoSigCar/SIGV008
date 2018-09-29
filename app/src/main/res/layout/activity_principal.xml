@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.PrincipalActivity">
-
+    tools:context=".Activity.PrincipalActivity"
+    tools:layout_editor_absoluteY="25dp">
 
 
     <ListView
@@ -17,6 +17,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +28,7 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="160dp"
-        android:layout_height="167dp"
+        android:layout_height="207dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/listPrincipal"

@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sigcar.Adapter.ArtistListAdapter;
 import com.sigcar.Classes.Artist;
+import com.sigcar.Classes.OleoMotor;
 import com.sigcar.DAO.ConfiguracaoFirebase;
 import com.sigcar.Helper.Base64Custom;
 import com.sigcar.Helper.DateCustom;
@@ -42,6 +43,7 @@ public class MusicaActivity extends AppCompatActivity {
     Spinner spinnerGenres;
     ListView listViewArtists;
     EditText editTextData;
+    private OleoMotor oleoMotor;
 
 
     List<Artist> artistList;
@@ -67,7 +69,7 @@ public class MusicaActivity extends AppCompatActivity {
         editTextData =  (EditText) findViewById( R.id.editTextData );
         artistList = new ArrayList<>();
 
-//        editData.setText( DateCustom.dataAtual() );
+        editTextData.setText( DateCustom.dataAtual() );
 //        recuperarDespesaTotal();
 
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
@@ -178,7 +180,8 @@ public class MusicaActivity extends AppCompatActivity {
         String name = editTextName.getText().toString().trim();
         String genre = spinnerGenres.getSelectedItem().toString();
         String idade = editTextIdade.getText().toString();
-        String date = editTextData.getText().toString();
+        String date =  editTextData.getText().toString();
+        oleoMotor.salvar( date );
 
         if( !TextUtils.isEmpty(name) ) {
 
