@@ -116,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        verificarUsuarioLogado();
+    }
+
     public void abrirTelaPrincipal(){
         startActivity(new Intent(this, PrincipalActivity.class));
         finish();
@@ -126,5 +132,17 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, CadastroUsuarioActivity.class);
         startActivity(intent);
+    }
+
+    public void verificarUsuarioLogado(){
+        autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
+//        autenticacao.signOut();
+        if( autenticacao.getCurrentUser() != null ){
+            abrirTelaMain();
+        }
+    }
+
+    public void abrirTelaMain(){
+        startActivity(new Intent(this, PrincipalActivity.class));
     }
 }

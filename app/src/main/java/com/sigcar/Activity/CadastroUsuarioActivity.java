@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.sigcar.Classes.Usuario;
 import com.sigcar.DAO.ConfiguracaoFirebase;
+import com.sigcar.Helper.Base64Custom;
 import com.sigcar.R;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
@@ -87,6 +88,9 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                 if ( task.isSuccessful() ){
 
+                    String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
+                    usuario.setIdUsuario( idUsuario );
+                    usuario.salvar();
                     finish();
 
                 }else {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sigcar.Adapter.ArtistListAdapter;
 import com.sigcar.Classes.Artist;
+import com.sigcar.DAO.ConfiguracaoFirebase;
+import com.sigcar.Helper.Base64Custom;
+import com.sigcar.Helper.DateCustom;
 import com.sigcar.R;
 
 import java.util.ArrayList;
@@ -36,8 +41,13 @@ public class MusicaActivity extends AppCompatActivity {
     Button buttonAddArtist;
     Spinner spinnerGenres;
     ListView listViewArtists;
+    EditText editTextData;
+
 
     List<Artist> artistList;
+
+//    private DatabaseReference databaseArtists = ConfiguracaoFirebase.getFirebase();
+    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
 
     DatabaseReference databaseArtists;
 
@@ -47,7 +57,6 @@ public class MusicaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_musica);
 
-        databaseArtists = FirebaseDatabase.getInstance().getReference("Artists");
 
 
         editTextName = (EditText) findViewById(R.id.editTextName);
@@ -55,7 +64,18 @@ public class MusicaActivity extends AppCompatActivity {
         spinnerGenres = (Spinner) findViewById(R.id.spinnerGenres);
         listViewArtists = (ListView) findViewById(R.id.listViewArtists);
         editTextIdade = (EditText) findViewById( R.id.editTextIdade );
+        editTextData =  (EditText) findViewById( R.id.editTextData );
         artistList = new ArrayList<>();
+
+//        editData.setText( DateCustom.dataAtual() );
+//        recuperarDespesaTotal();
+
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
+        databaseArtists = FirebaseDatabase.getInstance().getReference("OleoMotor").child( idUsuario );
+
+
+
 
         buttonAddArtist.setOnClickListener(new View.OnClickListener() {
 
@@ -119,10 +139,18 @@ public class MusicaActivity extends AppCompatActivity {
 
         super.onStart();
 
+//    public void recuperarDespesaTotal(){
+
+//        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+//        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
+//        DatabaseReference usuarioRef = databaseArtists.child("OleoMotor").child( idUsuario );
+
         databaseArtists.addValueEventListener( new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+
 
                 artistList.clear();
 
@@ -150,11 +178,12 @@ public class MusicaActivity extends AppCompatActivity {
         String name = editTextName.getText().toString().trim();
         String genre = spinnerGenres.getSelectedItem().toString();
         String idade = editTextIdade.getText().toString();
+        String date = editTextData.getText().toString();
 
         if( !TextUtils.isEmpty(name) ) {
 
             String id = databaseArtists.push().getKey();
-            Artist artist = new Artist(id, name, genre, idade);
+            Artist artist = new Artist(id, name, genre, idade,date);
             databaseArtists.child(id).setValue(artist);
 
             Toast.makeText(this, "Anotação adicionada com Sucesso", Toast.LENGTH_LONG).show();
