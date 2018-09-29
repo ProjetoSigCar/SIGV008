@@ -181,7 +181,9 @@ public class MusicaActivity extends AppCompatActivity {
         String genre = spinnerGenres.getSelectedItem().toString();
         String idade = editTextIdade.getText().toString();
         String date =  editTextData.getText().toString();
-        oleoMotor.salvar( date );
+
+//        oleoMotor.setData( date );
+//        oleoMotor.salvar( date );
 
         if( !TextUtils.isEmpty(name) ) {
 
