@@ -4,20 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,10 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sigcar.Adapter.ArtistListAdapter;
 import com.sigcar.Classes.Artist;
-import com.sigcar.Classes.OleoMotor;
-import com.sigcar.DAO.ConfiguracaoFirebase;
-import com.sigcar.Helper.Base64Custom;
-import com.sigcar.Helper.DateCustom;
+import com.sigcar.Classes.Kilometragem;
+import com.sigcar.Classes.Veiculo;
 import com.sigcar.R;
 
 import java.util.ArrayList;
@@ -42,16 +39,16 @@ public class MusicaActivity extends AppCompatActivity {
     Button buttonAddArtist;
     Spinner spinnerGenres;
     ListView listViewArtists;
-    EditText editTextData;
-    private OleoMotor oleoMotor;
+    Spinner spinnerVeiculos;
+    Spinner spinnerKilometragem;
 
+    Veiculo veiculo;
 
     List<Artist> artistList;
 
-//    private DatabaseReference databaseArtists = ConfiguracaoFirebase.getFirebase();
-    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
-
     DatabaseReference databaseArtists;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +56,7 @@ public class MusicaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_musica);
 
+        databaseArtists = FirebaseDatabase.getInstance().getReference("Artists");
 
 
         editTextName = (EditText) findViewById(R.id.editTextName);
@@ -66,18 +64,12 @@ public class MusicaActivity extends AppCompatActivity {
         spinnerGenres = (Spinner) findViewById(R.id.spinnerGenres);
         listViewArtists = (ListView) findViewById(R.id.listViewArtists);
         editTextIdade = (EditText) findViewById( R.id.editTextIdade );
-        editTextData =  (EditText) findViewById( R.id.editTextData );
+        spinnerVeiculos = (Spinner) findViewById(R.id.spinnerVeiculos);
+        spinnerKilometragem =(Spinner)  findViewById(R.id.spinnerKilometragem);
+
+
+
         artistList = new ArrayList<>();
-
-        editTextData.setText( DateCustom.dataAtual() );
-//        recuperarDespesaTotal();
-
-        String emailUsuario = autenticacao.getCurrentUser().getEmail();
-        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
-        databaseArtists = FirebaseDatabase.getInstance().getReference("OleoMotor").child( idUsuario );
-
-
-
 
         buttonAddArtist.setOnClickListener(new View.OnClickListener() {
 
@@ -87,6 +79,39 @@ public class MusicaActivity extends AppCompatActivity {
                 addArtist();
             }
         });
+
+        spinnerVeiculos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                veiculo = new Veiculo();
+                veiculo.Loading(spinnerVeiculos.getSelectedItem().toString());
+
+                ArrayAdapter<String> adapter;
+                List<String> list;
+
+                list = new ArrayList<String>();
+
+                for (Kilometragem item:veiculo.getKilometragemList())
+                {
+                    list.add(item.getKm());
+                }
+
+                adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerKilometragem.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
 
 
         listViewArtists.setOnItemLongClickListener((adapterView, view, i, l) -> {
@@ -133,45 +158,41 @@ public class MusicaActivity extends AppCompatActivity {
         });
 
 
+
+
     }
 
 
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-
-//    public void recuperarDespesaTotal(){
-
-//        String emailUsuario = autenticacao.getCurrentUser().getEmail();
-//        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
-//        DatabaseReference usuarioRef = databaseArtists.child("OleoMotor").child( idUsuario );
-
-        databaseArtists.addValueEventListener( new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-
-                artistList.clear();
-
-                for(DataSnapshot artistSnapshot : dataSnapshot.getChildren()) {
-
-                    Artist artist = artistSnapshot.getValue(Artist.class);
-                    artistList.add(artist);
-                }
-
-                ArtistListAdapter adapter = new ArtistListAdapter(MusicaActivity.this, artistList);
-                listViewArtists.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-
-        });
-    }
+//    @Override
+//    protected void onStart() {
+//
+//        super.onStart();
+//
+//        databaseArtists.addValueEventListener( new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                artistList.clear();
+//
+//                for(DataSnapshot artistSnapshot : dataSnapshot.getChildren()) {
+//
+//                    Artist artist = artistSnapshot.getValue(Artist.class);
+//                    artistList.add(artist);
+//                }
+//
+//                ArtistListAdapter adapter = new ArtistListAdapter(MusicaActivity.this, artistList);
+//                listViewArtists.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//
+//        });
+// }
 
 
 
@@ -180,15 +201,11 @@ public class MusicaActivity extends AppCompatActivity {
         String name = editTextName.getText().toString().trim();
         String genre = spinnerGenres.getSelectedItem().toString();
         String idade = editTextIdade.getText().toString();
-        String date =  editTextData.getText().toString();
-
-//        oleoMotor.setData( date );
-//        oleoMotor.salvar( date );
 
         if( !TextUtils.isEmpty(name) ) {
 
             String id = databaseArtists.push().getKey();
-            Artist artist = new Artist(id, name, genre, idade,date);
+            Artist artist = new Artist(id, name, genre, idade);
             databaseArtists.child(id).setValue(artist);
 
             Toast.makeText(this, "Anotação adicionada com Sucesso", Toast.LENGTH_LONG).show();

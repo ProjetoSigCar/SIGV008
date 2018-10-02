@@ -88,10 +88,10 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                 if ( task.isSuccessful() ){
 
-                    String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
-                    usuario.setIdUsuario( idUsuario );
-                    usuario.salvar();
-                    finish();
+//                    String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
+//                    usuario.setIdUsuario( idUsuario );
+//                    usuario.salvar();
+//                    finish();
 
                 }else {
 

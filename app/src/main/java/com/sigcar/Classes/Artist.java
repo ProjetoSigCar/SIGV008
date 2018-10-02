@@ -5,18 +5,16 @@ public class Artist {
     private String artistName;
     private String artistGenre;
     private String artistIdade;
-    private String artistDate;
 
     public Artist() {
         // É preciso um construtor vazio. Veremos porque mais a frente.
     }
 
-    public Artist(String artistId, String artistName, String artistGenre, String artistIdade, String artistDate) {
+    public Artist(String artistId, String artistName, String artistGenre, String artistIdade) {
         this.artistId = artistId;
         this.artistName = artistName;
         this.artistGenre = artistGenre;
         this.artistIdade = artistIdade;
-        this.artistDate = artistDate;
     }
 
     // também precisamos de getters, exigência do Firebase.
@@ -35,9 +33,5 @@ public class Artist {
 
     public String getArtistIdade() {
         return artistIdade;
-    }
-
-    public String artistDate() {
-        return artistDate;
     }
 }

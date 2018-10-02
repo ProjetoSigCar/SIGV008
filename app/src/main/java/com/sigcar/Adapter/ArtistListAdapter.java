@@ -40,7 +40,6 @@ public class ArtistListAdapter extends ArrayAdapter<Artist> {
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewGenre = (TextView) listViewItem.findViewById(R.id.textViewGenre);
         TextView textViewIdade = (TextView) listViewItem.findViewById(R.id.textViewIdade);
-        TextView textViewDate = (TextView) listViewItem.findViewById(R.id.textViewDate);
 
         // a posição do artista na lista (armazenamento) é a mesma na lista (listview)
         // então usamos esse valor (position) para acessar o objeto "Artist" correto
@@ -52,7 +51,6 @@ public class ArtistListAdapter extends ArrayAdapter<Artist> {
         textViewName.setText(artist.getArtistName());
         textViewGenre.setText(artist.getArtistGenre());
         textViewIdade.setText(artist.getArtistIdade());
-        textViewDate.setText(artist.artistDate());
 
         // a view está pronta! É só devolver para quem pediu
         return listViewItem;

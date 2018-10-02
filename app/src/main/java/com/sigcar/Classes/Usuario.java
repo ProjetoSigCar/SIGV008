@@ -15,10 +15,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public void salvar() {
-        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
-        firebase.child( "usuarios" ).child( this.idUsuario ).setValue( this );
-    }
+//    public void salvar() {
+//        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
+//        firebase.child( "usuarios" ).child( this.idUsuario ).setValue( this );
+//    }
 
    
 

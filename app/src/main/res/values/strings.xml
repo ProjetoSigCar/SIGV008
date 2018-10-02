@@ -11,4 +11,12 @@
         <item>Blues</item>
     </array>
 
+
+
+    <array name="Veiculos">
+        <item>Onix</item>
+        <item>Fiat Uno</item>
+    </array>
+
+
 </resources>
